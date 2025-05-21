@@ -35,7 +35,7 @@ class UsersController extends Controller
             'dni_user' => 'required|string|max:8|unique:users',
             'nick_user' => 'required|string|max:50|unique:users',
             'password' => 'required|string|max:60',
-            'level_user' => 'required|string|max:1',
+            'level_user' => 'required|string|max:1|in:A,E',
             'id_offi' => 'required|string',
         ]);
 

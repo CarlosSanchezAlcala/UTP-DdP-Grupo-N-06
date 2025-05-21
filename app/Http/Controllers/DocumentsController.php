@@ -39,8 +39,6 @@ class DocumentsController extends Controller
             'num_exp' => $request->num_exp,
             'created_by' => Auth::user()->id_user,
             'pdf_path' => $request->pdf_path,
-            'status_env_doc' => 'P',
-            'status_doc' => 'A',
         ]);
     }
 

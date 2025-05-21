@@ -27,8 +27,8 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Inicio de sesión exitoso!',
             'token_type' => 'Bearer',
-            'user' => $user,
-            //'token' => $token // Comment for security reasons
+            'user' => $user->name_user . ' ' . $user->ape_pat_user . ' ' . $user->ape_mat_user,
+            'token' => $token // Comment for security reasons
         ], 200);
     }
 
