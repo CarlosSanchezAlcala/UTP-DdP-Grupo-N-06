@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Offices;
 use Illuminate\Http\Request;
 
 class OfficesController extends Controller
@@ -11,7 +12,7 @@ class OfficesController extends Controller
      */
     public function index()
     {
-        //
+        return Offices::all();
     }
 
     /**
@@ -27,7 +28,12 @@ class OfficesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name_offi' => 'required|string|max:40',
+            'desc_offi' => 'required|string|max:100',
+        ]);
+
+        return Offices::create($request->all());
     }
 
     /**

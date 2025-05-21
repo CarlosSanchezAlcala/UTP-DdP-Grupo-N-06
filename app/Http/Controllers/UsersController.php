@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Users;
 use Illuminate\Http\Request;
 
 class UsersController extends Controller
@@ -11,7 +12,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        //
+        return Users::with('offices')->get();
     }
 
     /**
@@ -27,7 +28,21 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name_user' => 'required|string|max:50',
+            'ape_pat_user' => 'required|string|max:50',
+            'ape_mat_user' => 'required|string|max:50',
+            'dni_user' => 'required|string|max:8|unique:users',
+            'nick_user' => 'required|string|max:50|unique:users',
+            'password' => 'required|string|max:60',
+            'level_user' => 'required|string|max:1',
+            'id_offi' => 'required|string',
+        ]);
+
+        $data = $request->all();
+        $data['password'] = bcrypt($request->password);
+
+        return Users::create($data);
     }
 
     /**

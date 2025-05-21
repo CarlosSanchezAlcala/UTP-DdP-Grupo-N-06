@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Documents;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DocumentsController extends Controller
 {
@@ -11,7 +13,7 @@ class DocumentsController extends Controller
      */
     public function index()
     {
-        //
+        return Documents::with(['creator', 'updater', 'office'])->get();
     }
 
     /**
@@ -27,7 +29,19 @@ class DocumentsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'num_exp' => 'required|string|max:50|unique:documents',
+            'id_offi' => 'required|integer|exists:offices,id_offi',
+            'pdf_path' => 'required|string|max:255',
+        ]);
+
+        return Documents::create([
+            'num_exp' => $request->num_exp,
+            'created_by' => Auth::user()->id_user,
+            'pdf_path' => $request->pdf_path,
+            'status_env_doc' => 'P',
+            'status_doc' => 'A',
+        ]);
     }
 
     /**
