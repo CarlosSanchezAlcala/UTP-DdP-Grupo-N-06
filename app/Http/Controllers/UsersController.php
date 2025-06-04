@@ -12,7 +12,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        return Users::with('offices')->get();
+        return Users::with('office')->get();
     }
 
     /**
