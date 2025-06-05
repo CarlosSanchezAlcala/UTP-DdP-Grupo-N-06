@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Users;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UsersController extends Controller
 {
@@ -42,7 +43,12 @@ class UsersController extends Controller
         $data = $request->all();
         $data['password'] = bcrypt($request->password);
 
-        return Users::create($data);
+        $users = Users::create($data);
+
+        return response()->json([
+            'message' => 'Usuario creado correctamente',
+            'user' => $users,
+        ], 201);
     }
 
     /**
@@ -64,9 +70,27 @@ class UsersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id_user)
     {
-        //
+        $request->validate([
+            'nick_user' => "required|string|max:50|unique:users,nick_user,{$id_user},id_user",
+            'password' => 'required|string|max:60',
+        ]);
+
+        $dataUpdate = $request->only(['nick_user', 'password']);
+
+        try {
+            $user = Users::findOrFail($id_user);
+            $dataUpdate['password'] = bcrypt($request->password);
+            $user->update($dataUpdate);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        }
+
+        return response()->json([
+            'message' => 'Usuario actualizado correctamente',
+            'user' => $user,
+        ], 200);
     }
 
     /**

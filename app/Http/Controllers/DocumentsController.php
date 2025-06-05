@@ -81,7 +81,7 @@ class DocumentsController extends Controller
 
         $document = Documents::findOrFail($id);
 
-        $oldPdfPath = $document->pdf_path;
+        $oldAbsolutePath = Storage::disk('public')->path($document->pdf_path);
 
         $newPdf = $request->file('new_pdf');
         $newPdfName = 'new_' . Str::random(10) . '.pdf';
@@ -105,7 +105,7 @@ class DocumentsController extends Controller
             }
         };
 
-        $importPages($oldPdfPath);
+        $importPages($oldAbsolutePath);
         $importPages($newPdfPath);
         $pdf->Output($mergedPdfPath, 'F');
 
