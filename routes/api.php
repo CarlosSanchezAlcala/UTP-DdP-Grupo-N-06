@@ -19,4 +19,5 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/documents', [DocumentsController::class, 'index']);
     Route::post('/documents', [DocumentsController::class, 'store']);
+    Route::put('/documents/{id}', [DocumentsController::class, 'update']);
 });
